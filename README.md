@@ -2,19 +2,23 @@
 
 Working agreements for solo development with AI coding agents.
 
-These came out of about five months on one Flutter project — March to August
-2026 — working alone across three machines in scattered sessions. They are what
-I start a project with now. They are not a theory of AI-assisted development,
-and they are dated: some exist because of a specific tool's behaviour in 2026,
-and will look silly later.
+These came out of about nine months of AI-assisted development — December 2025
+onward — across a lot of projects, the biggest of my own being a Flutter app I've been building since March. Working alone, across three machines, in scattered
+sessions. The number of projects is why the rules exist: enough of them in a
+short enough span that I needed the process to hold still even when nothing
+else did. They are what I start a project with now.
+
+They are not a theory of AI-assisted development, and they are dated: some
+exist because of a specific tool's behaviour in 2026, and will look silly
+later.
 
 ## The files
 
-| File | What it is |
-| --- | --- |
-| `RULES.md` | **The source of truth.** Terse, numbered, stable IDs. Edit here. |
-| `CLAUDE_FRAGMENT.md` | Agent-facing subset, extracted from `RULES.md`. Never edited directly — change `RULES.md` and re-extract. |
-| `HOUSE_RULES.md` | Annotated essay version, with the scar behind each rule. Commentary on a specific version of `RULES.md`, not a parallel source. Carries a snapshot header. |
+| File                 | What it is                                                                                                                                                 |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `RULES.md`           | **The source of truth.** Terse, numbered, stable IDs. Edit here.                                                                                           |
+| `CLAUDE_FRAGMENT.md` | Agent-facing subset, extracted from `RULES.md`. Never edited directly — change `RULES.md` and re-extract.                                                  |
+| `HOUSE_RULES.md`     | Annotated essay version, with the scar behind each rule. Commentary on a specific version of `RULES.md`, not a parallel source. Carries a snapshot header. |
 
 If the three ever disagree, `RULES.md` wins.
 
