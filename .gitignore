@@ -1,0 +1,29 @@
+# This repo is three markdown files and needs almost none of this. It exists
+# because HR-001 says the gitignore lands before the first commit that could
+# contain a secret, and "this project doesn't have secrets yet" is how that
+# rule gets skipped. Eating our own cooking.
+
+# Secrets and signing material (HR-001)
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+.env
+.env.*
+!.env.example
+**/service-account*.json
+secrets/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / tooling
+.vscode/
+.idea/
+*.swp
+*~
+.claude/
