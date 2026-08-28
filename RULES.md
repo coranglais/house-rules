@@ -121,6 +121,16 @@ overhead. `Enforced: human`
 
 ---
 
+## Source of truth
+
+**HR-022** — Values owned by another source of truth are read at runtime, never
+written as literals: schema versions, version stamps, build numbers, paths that
+another config already declares. A constant that duplicates a value owned
+elsewhere stays correct until the source moves once, and nothing signals when it
+does. `Enforced: human`
+
+---
+
 ## Adopting this
 
 1. Vendor this file to `docs/RULES.md`, header recording the date and source tag.
