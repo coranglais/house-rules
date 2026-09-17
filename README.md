@@ -64,3 +64,8 @@ Read `HOUSE_RULES.md` first if you want to know *why* any of these exist. The
 short version: every rule here is generic advice until you attach the scar, and
 rules that feel like ceremony get waived exactly when they matter. Adopt the
 ones where you can name your own cost.
+
+## License
+
+This repository is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/);
+if you reuse it, please attribute it as "adapted from coranglais/house-rules (CC BY 4.0)".
