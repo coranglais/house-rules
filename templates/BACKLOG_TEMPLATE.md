@@ -1,13 +1,24 @@
 <!--
   BACKLOG_TEMPLATE.md — a structured engineering backlog format.
   Source: house-rules repo, templates/BACKLOG_TEMPLATE.md
-  Template version: 1.1 (2026-09-16). v1.0 was extracted from Cuando's
-  BACKLOG.md; v1.1 adds what a second instantiation (MGP) needed.
+  Template version: 1.2 (2026-09-17). v1.0 was extracted from Cuando's
+  BACKLOG.md; v1.1 adds what a second instantiation (MGP) needed; v1.2
+  tightens two conventions.
 
   Copy-once, not synced. Instantiate as docs/BACKLOG.md, fill in the
   {placeholders}, delete this comment and the "Adapting this template"
   section at the bottom. Record the template version in the header line
   below so a later revision of the format can be diffed against it.
+
+  Changes in 1.2:
+  - Closed: the "What was wanted" paragraph is gone. The original body is
+    written once and never rewritten, so restating it on close was a
+    duplicate. A closed entry keeps its fields, body, and addenda in place,
+    followed where warranted by the transferable-mechanism paragraph.
+  - Dated addenda: `verified` joins the fields an addendum may update, and a
+    Finding always sets `verified` to its own date.
+  - Item template: a Finding placeholder joins Diagnosis and Decision.
+  All three are backward-compatible: a v1.1 instance needs no edits.
 
   Changes in 1.1:
   - Dated addenda convention inside items (Diagnosis / Finding / Decision).
@@ -21,7 +32,7 @@
 
 # {Project} — Backlog
 
-<!-- format: house-rules backlog template v1.1 -->
+<!-- format: house-rules backlog template v1.2 -->
 
 Deferred engineering work, parked findings, and known issues. Items enter here
 when they are real but not blocking; they leave the live queue when they ship or
@@ -132,8 +143,9 @@ never rewritten. Three kinds, each a bold heading on its own line:
 The original body is written once, for a reader with none of the conversation.
 Addenda are written the same way. An item with three addenda is not messy; it
 is an item that was understood in stages, and the stages are the record. An
-addendum that would change `agent`, `priority`, or `verify` says so at its end
-and the field is updated to match.
+addendum that would change `agent`, `priority`, `verify`, or `verified` says
+so at its end and the field is updated to match. A Finding is a tree check by
+definition, so it always updates `verified` to its own date.
 
 ### Item template
 
@@ -155,6 +167,10 @@ including things NOT to do by reflex. Cross-reference related items by id.
 Write it for a reader who has none of the conversation that produced it.}
 
 **Diagnosis ({date})**
+
+{Optional. See Dated addenda.}
+
+**Finding ({date})**
 
 {Optional. See Dated addenda.}
 
@@ -209,13 +225,12 @@ Shipped or declined. Kept rather than deleted, with ids never reused, so that a
 question already settled is not re-derived from scratch. Nothing here is live
 work.
 
-A closed entry has three parts: the original fields (with `priority` marked no
-longer applicable and `resolution` added), a **What was wanted** paragraph
-restating the original problem, and — where the fix taught something that
-outlives the bug — a **transferable mechanism** paragraph stating the general
-hazard in a form the next reader can recognize in unrelated code. Dated
-addenda accumulated while the item was live stay in place; the closing
-paragraphs go after them.
+A closed entry keeps the original fields (with `priority` marked no longer
+applicable and `resolution` added), the original body, and any dated addenda
+accumulated while the item was live, all in place. The body was written once
+and is not restated on close. Where the fix taught something that outlives the
+bug, a **transferable mechanism** paragraph follows the addenda, stating the
+general hazard in a form the next reader can recognize in unrelated code.
 
 ---
 
