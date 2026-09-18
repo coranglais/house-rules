@@ -239,6 +239,39 @@ stamp has gone stale is the part that never gets automated.
 
 ---
 
+### Values with an owner are read, not copied (HR-022)
+
+Where something else already declares a value — an ORM's schema version, the
+version string in `pubspec.yaml`, a path some config file owns — the code reads
+it. A literal that restates it is a copy, and copies drift silently, same as
+documents do.
+
+*The scar, and it's the other half of the HR-007 one:* my Flutter app's JSON
+export wrote `metadata.schemaVersion` as a literal `1` while the ORM schema had
+moved to 2, and `appVersion` as a literal `'1.0.0'` while `pubspec.yaml` said
+`1.0.0+3`. Neither literal had any link back to its source, so nothing could
+complain. There was no disagreement anywhere to detect — just two numbers that
+had been right once.
+
+The sharper detail is that the metadata map was built twice, in two different
+methods, so the same wrong literals existed in duplicate. The fix wasn't
+correcting the numbers; it was collapsing the two construction sites into one
+that reads both values from the things that own them. Correcting a literal
+leaves you holding a literal.
+
+This one was caught before release, which is the only reason it's a rule and not
+a permanent fact. Export files are immutable once written — every file exported
+before the fix would have carried the wrong numbers forever, in users' hands,
+with no way to reach back and amend them (HR-003).
+
+*Why it's here and not in Part 1:* I don't know of a lint that catches this in
+general. The literal is well-formed, plausible, and syntactically unrelated to
+the value it duplicates — there's nothing for a checker to compare it against.
+Asking "who owns this number?" of every new constant is the only check I have,
+and it costs attention every time.
+
+---
+
 ## Applying this to a new project
 
 1. Vendor this file to `docs/HOUSE_RULES.md` with a header line recording the

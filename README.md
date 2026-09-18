@@ -24,7 +24,7 @@ If the three ever disagree, `RULES.md` wins.
 
 ## Rule IDs
 
-Rules are `HR-001` through `HR-021`. **IDs are permanent** — never reused, never
+Rules are `HR-001` through `HR-022`. **IDs are permanent** — never reused, never
 renumbered. A retired rule keeps its number and gets marked `Retired`, so a
 cross-reference from an old vendored copy never silently points at a different
 rule.
