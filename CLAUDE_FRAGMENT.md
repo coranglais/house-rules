@@ -1,6 +1,6 @@
 # Agent rules
 
-Source: `RULES.md` @ `v1` — 2026-08-17 — github.com/coranglais/house-rules
+Source: `RULES.md` @ `v2` — 2026-09-17 — github.com/coranglais/house-rules
 
 <!-- Extracted from RULES.md. Do not edit here — edit RULES.md and re-extract. -->
 
@@ -55,5 +55,11 @@ a new entry saying "Supersedes: [entry]" — never edit or delete the old one.
 **Write environment-specific findings into the repo.** Non-obvious build flags,
 platform quirks, the symptom of a corrupted build directory: these belong in a
 file, not in the session that discovered them. (HR-018)
+
+**Read owned values at runtime; never write them as literals.** Schema versions,
+version stamps, build numbers, paths another config already declares: if another
+source of truth owns a value, read it from there. A constant that duplicates it
+stays correct until the source moves once, and nothing signals when it does.
+(HR-022)
 
 **Never renumber or reuse rule IDs.**
