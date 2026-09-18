@@ -50,6 +50,16 @@ Release notes record what moved: rules added, rules retired, and rules that
 migrated to a different `Enforced` category. That last one is the interesting
 column.
 
+**Checking staleness.** In a house-rules checkout, diff `RULES.md` from the tag
+named in a derived file's header to the current commit:
+
+```
+git diff <tag> HEAD -- RULES.md
+```
+
+Empty output means the copy is current. Anything else is exactly what the copy
+is missing.
+
 ## Using these
 
 1. Vendor `RULES.md` into your project as `docs/RULES.md`, with a header
