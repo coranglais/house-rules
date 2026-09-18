@@ -41,6 +41,9 @@ from Claude Code observations during the v2 re-sync session (the one that
 brought `CLAUDE_FRAGMENT.md` and `HOUSE_RULES.md` up to tag `v2`). No
 conflicts.
 
+**2026-09-17 — Template feedback filed:** item 003 added, from the feedback
+that came out of instantiating this file. 001 and 002 unchanged.
+
 ---
 
 ## Field conventions
@@ -258,6 +261,55 @@ went wrong, but the assumption was made once and will be made again.
 **Revisit trigger:** the first time the fragment is found to have actually
 drifted from `RULES.md`, as opposed to lagging a tag bump. Until then the
 manual re-sync at each tag is the process.
+
+### 003 — Backlog template v1.3 candidates
+
+- **area:** docs
+- **priority:** deferred
+- **agent:** yes — all four changes are wording, mechanical, and local to
+  `templates/BACKLOG_TEMPLATE.md`.
+- **verify:** template at v1.3 contains all four; the header changelog lists
+  them; "Changes in 1.3" states they are backward-compatible.
+- **source:** Claude Code instantiation feedback on this repo's
+  `docs/BACKLOG.md`, 2026-09-17
+- **entered:** 2026-09-17
+- **verified:** 2026-09-17 — `templates/BACKLOG_TEMPLATE.md:55-57`
+  (Companion docs), `:51-53` (Scope), `:53`, `:87-89`, `:156`, and
+  `:255-258` (the three milestone-tag sites and the Adapting bullet),
+  `:114-115` (`resolution` wording).
+
+Four wording changes surfaced by instantiating v1.2 against a repo with no
+spec, no strategy doc, no release path, and nothing out-of-repo. None changes
+a field, a section, or a convention; a v1.2 instance would need no edits.
+
+1. **Companion docs** (`:55-57`). The placeholders assume a `PLAN.md` and a
+   `STRATEGY.md` exist. Say what to write when neither does, rather than
+   leaving the instantiator to invent a sentence.
+2. **Scope** (`:51-53`). "Name what lives elsewhere" has no answer when
+   nothing does. Same fix: a sentence for the empty case.
+3. **Adapting section** (`:255-258`). Dropping the milestone tag touches
+   three places: the Scope paragraph (`:53`), the `priority` description
+   (`:87-89`), and the item template (`:156`). The bullet that says the tag
+   is optional should list them, so the instantiator does not search.
+4. **`resolution` description** (`:114-115`). "As the historical record of
+   what was wanted" is the last echo of the "What was wanted" paragraph that
+   v1.2 removed from Closed. Tidy the phrase so the field description no
+   longer names something the format no longer has.
+
+Two observations from the same feedback were considered and are **not**
+candidates. Recorded here so they are not re-raised:
+
+- **The conventions text dwarfs a small queue.** True, and deliberate.
+  Copy-once means a vendored copy has no template to hand, so the conventions
+  travel with the instance. The trade is size against self-containment, and
+  self-containment wins.
+- **Empty sections hold a "None" line.** Three lines each. Keeping every
+  section present, in order, is what makes the section set predictable for a
+  parser and for a reader comparing two instances. Not padding.
+
+**Trigger:** bump to 1.3 at the next instantiation, or when a non-wording
+change forces a version anyway. Not on its own; four wording fixes do not
+earn a tag by themselves.
 
 ---
 
