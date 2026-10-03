@@ -44,6 +44,12 @@ conflicts.
 **2026-09-17 — Template feedback filed:** item 003 added, from the feedback
 that came out of instantiating this file. 001 and 002 unchanged.
 
+**2026-10-03 — v2.1 cut filed:** item 004 added under Near-term, from what a
+tracker with a non-code section taught between 2026-09-20 and 2026-10-02.
+Its claims about this repo were tree-checked at entry; its source items were
+read in the tracker's `docs/BACKLOG.md`. 001, 002 and 003 unchanged; 004
+cross-references all three.
+
 ---
 
 ## Field conventions
@@ -156,8 +162,117 @@ Write it for a reader who has none of the conversation that produced it.}
 
 ## Near-term
 
-None. There is no separate Blockers section; if a blocker exists, it is the
-first item here.
+There is no separate Blockers section; if a blocker exists, it is the first
+item here.
+
+### 004 — Tag `v2` predates the fragment that claims it, and the tracker's lessons are not in the rules or the template; cut v2.1
+
+- **area:** rules — the cut is a `RULES.md` tag. Parts 1 and 2 touch
+  `derived` and `docs` (the template); they are one item because they ship
+  as one tag.
+- **priority:** near-term
+- **agent:** triage — parts 1 and 2 are mechanical once scoped; parts 3 and
+  4 are judgment calls about rule content, and the tag name is the open
+  question 001 already holds.
+- **verify:** a `v2.1` tag exists, and at that tag `CLAUDE_FRAGMENT.md` and
+  `HOUSE_RULES.md` name `v2.1` and the fragment carries every rule the
+  inclusion rule says it should; `templates/BACKLOG_TEMPLATE.md` is at v1.3
+  with the three additions in part 2 and its header changelog lists them;
+  the secret-ordering rule is in `RULES.md` under a new id, or a Decision
+  here says why not; every rule in `RULES.md` has been asked the part 4
+  question and each demotion or keep for HR-013 is recorded in a Decision
+  here.
+- **source:** a tracker with a non-code section: its `docs/BACKLOG.md`
+  items 013, 020 and 024 and their closes, work of 2026-09-20 to 2026-10-02;
+  relayed by the maintainer 2026-10-03
+- **entered:** 2026-10-03
+- **verified:** 2026-10-03 — `git rev-parse v2^{commit}` is 921754e;
+  `git show v2:CLAUDE_FRAGMENT.md` line 3 reads `RULES.md @ v1` and has no
+  HR-022; `CLAUDE_FRAGMENT.md:3` and `:63` at main read `v2` and HR-022
+  (c492a56); `HOUSE_RULES.md:5` reads `v2` (9aba781);
+  `git diff --stat v2 HEAD` lists no change to `RULES.md`;
+  `git ls-remote --tags origin` shows `v2` published;
+  `templates/BACKLOG_TEMPLATE.md:4` is v1.2, `:112-116` (`resolution`),
+  `:229-233` (transferable mechanism); `RULES.md:86-87` (HR-013),
+  `RULES.md:21-25` (the three `Enforced` values). Source items read in the
+  tracker at 1b90c4a: `docs/BACKLOG.md:1601` (013), `:1881` (020),
+  `:2163` (024).
+
+Four things, learned on one project in two weeks, that belong in one tag.
+
+**1. The `v2` tag and the fragment disagree.** `v2` points at 921754e, the
+merge that brought HR-022 into `RULES.md`. The fragment was re-extracted one
+commit later, in c492a56, and the essay's snapshot header was bumped in
+9aba781. So the tree at `v2` holds a fragment whose provenance line says `v1`
+and which has no HR-022, while the fragment at main says it was taken from
+`v2`. Anyone who checks out the tag, or vendors the fragment from it, gets the
+old one. `RULES.md` itself is unchanged between `v2` and main, so the README's
+staleness check is unaffected; the mismatch is only in the derived files.
+
+`v2` is already on the remote. Moving a published tag is the thing not to do
+by reflex: a clone that has fetched it keeps the old target silently. A new
+tag on a commit where the derived files and their headers agree is the fix,
+and "retag" in the source is read here as that.
+
+**2. Backlog template v1.3.** Three additions, each something the tracker's
+closes did that the template does not ask for:
+
+- **The transferable mechanism paragraph on closed items states the general
+  hazard.** v1.2 already has the paragraph (`:229-233`, "where the fix taught
+  something that outlives the bug"). The tracker's closes wrote one on every
+  item cited here, and each names a hazard recognizable in unrelated code
+  (013: "A refusal to start is only as safe as the order it is deployed
+  in"). What v1.3 changes relative to the existing text, whether stronger
+  wording, an example, or a slot in the item template, is for triage.
+- **A resolution names which verify clause was checked where**: in the
+  tests, on a restore, or on production. 020 and 024 both do it ("met on a
+  restore of the 2026-10-01 production dump (Finding), not on production").
+  The `resolution` description (`:112-116`) asks only for date, commits and
+  a one-line outcome, which lets "shipped" cover a clause nobody saw run in
+  production.
+- **Migrations are tested against a restore of the production dump, started
+  from the deployed commit, not against an empty database.** 020 and 024 ran
+  in two stages: the deployed commit on the restore, then the new commit on
+  the same file. An empty database has no rows for a migration to get wrong.
+
+003 already holds four v1.3 candidates and a trigger ("not on its own"). These
+three are not wording-only, so they are the non-wording change that trigger
+waits for; 003's four ride along, and the two items close together.
+
+**3. New rule candidate: a required secret ships in a fixed order.** Apply
+the variable, confirm the service restarted with it, then push the code that
+refuses to start without it. On Railway a variable added in the console is
+staged, and only a deploy started from the console applies it; a push starts
+a deploy that reads the applied set. Tracker 013 added a fail-closed check on
+`SESSION_SECRET`, the variable was staged and not applied, and the
+git-triggered deploy crashed. The crash was the check working; the fix is the
+order, never a default value.
+
+The source calls this a structural candidate. As `RULES.md:23` defines
+`structural` ("configured once; the mistake is then unavailable"), an
+ordering of three manual steps is `human` unless something enforces it, such
+as a deploy script that refuses when the variable is absent from the applied
+set. Triage decides the `Enforced` value, whether the rule names Railway or
+states the general case with Railway as the instance, and whether it belongs
+in the fragment under the inclusion rule (`RULES.md:10-15`). It takes the
+next unused HR id.
+
+**4. Reread `RULES.md` asking "which of these has a scar behind it".** A rule
+with an incident behind it stays a rule; one without is demoted to advice.
+HR-013 (Conventional Commits, `RULES.md:86-87`) may be one. Two things to
+settle first: `RULES.md` has no "advice" category today, only three
+`Enforced` values and `Retired`, so demotion needs a form (a section, a
+marker, or a move to the essay); and ids are permanent, so a demoted rule
+keeps its number. Do not delete.
+
+**The tag name.** Parts 3 and 4 change rule content. 001 describes a
+patch-style `v2.1` as a wording-only tag the README does not yet define, and
+that reading does not fit a cut that adds a rule and demotes others. Either
+the README's Versions section defines `vN.x` to cover this, or the cut is
+`v3` and only part 1 is a `v2.1`. 001's one-word HR-015 fix shares whichever
+tag this is. 002's revisit trigger (the fragment "found to have actually
+drifted") is not met by part 1: the fragment lagged a tag by one commit, it
+did not drift from `RULES.md`.
 
 ---
 
