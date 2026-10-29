@@ -1,14 +1,59 @@
 <!--
   BACKLOG_TEMPLATE.md — a structured engineering backlog format.
   Source: house-rules repo, templates/BACKLOG_TEMPLATE.md
-  Template version: 1.2 (2026-09-17). v1.0 was extracted from Cuando's
+  Template version: 1.3 (2026-10-28). v1.0 was extracted from Cuando's
   BACKLOG.md; v1.1 adds what a second instantiation (MGP) needed; v1.2
-  tightens two conventions.
+  tightens two conventions; v1.3 folds in what two further instances (a
+  tracker with a non-code section, and this repo's own backlog) needed.
 
   Copy-once, not synced. Instantiate as docs/BACKLOG.md, fill in the
   {placeholders}, delete this comment and the "Adapting this template"
   section at the bottom. Record the template version in the header line
   below so a later revision of the format can be diffed against it.
+
+  Changes in 1.3:
+  - `gates` joins the fields, optional, after `priority`: the release track
+    an item must be resolved before. Track names are instance-defined and
+    stated in the instance's conventions. Orthogonal to `priority`, and
+    distinct from the milestone tag: `gates` names the stage an item stands
+    in front of; the tag only groups items that straddle code and non-code.
+    An instance using `gates` usually does not need the tag.
+  - `id` allows a letter-prefixed sequence for the Non-code section,
+    instance-defined, separate from the numeric one, never reused.
+  - Every item heading carries a kebab-case slug after the id:
+    `### {id} ({slug}) — {title}`. Required on new items; an older item gets
+    one the next time it is touched; untouched older items may stay bare.
+    Slugs are names, not summaries: two to four words, set once, never
+    changed or reused. Cite items as `id (slug)`.
+  - `priority` may carry an inline reason after an em dash, as `agent`
+    already does. On close the whole original value, annotation included,
+    is kept inside `was {value} — no longer applicable`.
+  - `resolution` names where each `verify` clause was seen met: tests, a
+    restore of production data, or production itself.
+  - The transferable-mechanism paragraph gets a slot in the item template
+    and a sentence under `resolution`.
+  - `verify` cites HR-023 (migration-verification) for migrations and data
+    changes rather than carrying the rule; the rule lives in RULES.md.
+  - Dated addenda: a correction to the original claim is a Finding. There is
+    no fourth kind.
+  - `verified`: `pending` is not a value; use `not checked`.
+  - `area` values may each carry a one-phrase description.
+  - Header gains an instantiation-comment slot below the format line: source
+    repo and tag, date, parts dropped, decisions-log location.
+  - `entered`: an instance whose founding batch predates the field states
+    the id range and batch date once in its conventions.
+  - Tree-check rule gains: an instance whose initial population was
+    assembled unchecked says so in its first Log entry; that is the one
+    deliberate exception.
+  - Field values and tags are written unquoted in field lines; a consumer
+    keys on the field line (`- **{field}:** ...`), never on a value
+    appearing anywhere in the file.
+  - Four wording fixes: the Companion docs and Scope paragraphs state the
+    empty case; the milestone-tag bullet in Adapting lists the three places
+    the tag appears; the `resolution` description no longer names the
+    "what was wanted" paragraph that 1.2 removed.
+  All fifteen are backward-compatible: every change is an optional field or
+  a documented practice, and a v1.1 or v1.2 instance needs no edits.
 
   Changes in 1.2:
   - Closed: the "What was wanted" paragraph is gone. The original body is
@@ -32,7 +77,9 @@
 
 # {Project} — Backlog
 
-<!-- format: house-rules backlog template v1.2 -->
+<!-- format: house-rules backlog template v1.3 -->
+<!-- instantiated from: {source repo}, tag {template tag}; {date}; dropped:
+     {parts dropped, or "nothing"}; decisions log: {file, or "Decision blocks"} -->
 
 Deferred engineering work, parked findings, and known issues. Items enter here
 when they are real but not blocking; they leave the live queue when they ship or
@@ -49,12 +96,16 @@ This file is the queue of record. If it isn't here, it isn't tracked — chat
 transcripts are not storage.
 
 **Scope:** engineering items only. {Name what lives elsewhere — release
-logistics, console forms, dashboards — and where.} A few items straddle both
-and are marked with the `{milestone-tag}` tag.
+logistics, console forms, dashboards — and where. If nothing does, say so:
+"Nothing about this project lives outside the repo, so there is no
+out-of-repo queue to point at."} A few items straddle both and are marked
+with the `{milestone-tag}` tag.
 
 **Companion docs:** `{docs/PLAN.md}` is the spec, `{docs/STRATEGY.md}` is the
 why. This file is neither — it is the list of things known to be wrong,
-missing, or deferred.
+missing, or deferred. {If neither exists, name what does describe the
+project — a README, the source itself — and say there is no spec and no
+strategy doc, so the instantiator is not left to invent a sentence.}
 
 ## Log
 
@@ -75,52 +126,94 @@ been tree-checked, known conflicts flagged inline by id.}
 Each item carries the same fields, in the same order. Machine-parseable by
 design: this file is intended to feed an agent-driven triage or backlog
 framework later, and the `agent` field is the triage decision that framework
-will consume.
+will consume. Fields marked optional are omitted, not left blank, when they
+do not apply. Field values and tags are written unquoted on field lines; a
+consumer keys on the field line (`- **{field}:** ...`), never on a value
+appearing anywhere in the file, so a value named in prose is not a hit.
 
 - **`id`** — stable, never reused. Zero-padded numeric, assigned in order of
   entry. An item filed retroactively (fix landed before the entry existed)
-  still gets the next id; say so in `entered`.
-- **`area`** — subsystem. One of: {`backup`, `data`, `ui`, `build`, `docs`,
-  `release`, ... — project-defined, keep the list short and stable}.
+  still gets the next id; say so in `entered`. An instance may key its
+  Non-code section with a letter-prefixed sequence of its own (`N01`, `N02`,
+  ...); the prefix is defined here once, the sequence is separate from the
+  numeric one, and its ids are never reused either.
+- **`slug`** — not a field but part of the heading: `### {id} ({slug}) —
+  {title}`. Kebab-case, two to four words, naming the item's subject so it
+  stays true if the title is later corrected. Set once; never changed or
+  reused. Required on every new item; an older item without one gets one
+  the next time it is touched. Cite an item as `{id} ({slug})` — a bare id
+  is a pointer only a machine can follow.
+- **`area`** — subsystem. {Each instance defines its own list here: five to
+  eight values, each optionally followed by a one-phrase description of what
+  it covers, e.g. `data` (schema, migrations, queries). Keep it to these; a
+  value used by one item belongs under a broader one.}
 - **`priority`** — `blocker` (cannot ship), `near-term` (ship-soon window),
   `deferred` (no date), `latent` (not currently reachable; guard against
   future reachability). May carry a milestone tag, e.g. `near-term,
   {milestone-tag}`, for items that sit on a release path but are not
-  themselves code.
+  themselves code; the tag name is instance-defined and stated here. May
+  carry an inline reason after an em dash (`near-term — gates {event},
+  {date}`), as `agent` does, so a move between sections is explained on the
+  line. On close the whole original value, annotation included, is kept
+  inside `was {value} — no longer applicable`.
+- **`gates`** — optional. The release track this item must be resolved
+  before. {Track names are instance-defined and stated here.} Absent means
+  it gates nothing. Orthogonal to `priority`: `blocker` means cannot ship at
+  all, `gates` means cannot ship *to that track*. Resolving a gate means
+  closing the item or re-scoping it so the gating part is done; most gates
+  are human checks that no test can verify. Recorded by hand; intended to
+  feed a release preflight check. Distinct from the milestone tag on
+  `priority`: `gates` names the stage; the tag only groups items that
+  straddle code and non-code, and an instance using `gates` rarely needs
+  it. Instances with a single release track drop the field — it would
+  duplicate `blocker` — and say so in the header.
 - **`agent`** — delegation triage. `yes` = mechanically verifiable, local
   change, small diff. `no` = requires a judgment call, a product decision, or
   touches something outside the repo. `triage` = not yet decided.
-  **A `yes` here never authorizes a push.** Pushes remain the human review gate.
+  **A `yes` here never authorizes a push{ to `{deploy-branch}`, if the
+  instance names one}.** Pushes remain the human review gate.
   When a value changes, say why in the field itself (`yes — scoped {date};
   see Decision below`) so the history is on the line, not in git blame.
 - **`verify`** — what proves the item done. An item with no verification story
   cannot be `agent: yes`. If an item has two halves with different verification
   stories, that is the signal to split it — or to say explicitly why it is one
-  item.
+  item. A migration or data change verifies per HR-023
+  (migration-verification): against a restore of production data, not an
+  empty database.
 - **`source`** — where the finding came from (audit, dogfooding, code review,
   a doc section, a conversation), so the reasoning is recoverable.
-- **`entered`** — when the item was added. Always present.
+- **`entered`** — when the item was added. Always present. An instance whose
+  founding batch predates the field states the id range and the batch date
+  here once, rather than on each item.
 - **`verified`** — when this item's claims were last checked **against the
   tree**, as distinct from against another document. Cite the file and line
   or the commit that confirms the claim. `n/a` for items with nothing
   in-repo to check: console settings, filings, design notes — and say what
   the item is about instead. `not checked` is the honest value for an item
   that has never been tree-checked; it is a valid state, not a placeholder to
-  hide.
+  hide. `pending` is not a value; use `not checked`.
 - **`blocks`** — optional. What this item stands in front of: a feature, a
   doc section, another item. Present only when something real is waiting.
 - **`resolution`** — present only on items under Closed: `shipped` or
-  `declined`, with the date, the commits, and a one-line outcome. Live items
-  omit it. A closed item keeps its original fields as the historical record
-  of what was wanted, with `priority` rewritten as `was {value} — no longer
-  applicable` so nothing consuming this file mistakes it for live work.
+  `declined`, with the date, the commits, a one-line outcome, and where
+  each `verify` clause was seen met: in the tests, on a restore of
+  production data, or on production itself. "Shipped" alone lets a clause
+  nobody saw run pass as met. Live items omit it. A closed item keeps its
+  original fields in place, with `priority` rewritten as `was {value} — no
+  longer applicable` so nothing consuming this file mistakes it for live
+  work. Where the fix taught something that outlives the bug, a
+  **transferable mechanism** paragraph follows the addenda (see Item
+  template), stating the general hazard in a form the next reader can
+  recognize in unrelated code.
 
 `verified` is the one that earns its place. An item sourced from another doc
 and never tree-checked is how an already-fixed bug arrives as a live entry and
 how an unbuilt screen gets described as shipped. A stale item looks exactly as
 fresh as a live one without it, and an agent consuming this file takes every
 entry at face value. **Backlog items sourced from another doc are checked
-against the tree before entry, not inherited on the doc's authority.**
+against the tree before entry, not inherited on the doc's authority.** An
+instance whose initial population was assembled unchecked says so in its
+first Log entry; that is the one deliberate exception.
 
 ### Dated addenda
 
@@ -134,26 +227,31 @@ never rewritten. Three kinds, each a bold heading on its own line:
   body without deleting them; the reader should be able to see what was
   guessed and what turned out to be true.
 - **`Finding ({date})`** — what a tree check found when it disagrees with
-  the item's original claim. The claim stays; the finding corrects it.
+  the item's original claim. The claim stays; the finding corrects it. A
+  correction to the title, scope, or a number in the original body is a
+  Finding; there is no fourth kind.
 - **`Decision ({date})`** — a scope or design choice, with the alternative
   considered and why it lost. **For a project without a separate decisions
   log, this block is the decisions log**: a strategic decline lives here on
-  the closed item, and the header's decisions-log reference should say so.
+  the closed item, and the header's decisions-log reference says so. {Each
+  instance states here which applies: a named decisions file, or "Decision
+  blocks are this project's decisions log."}
 
 The original body is written once, for a reader with none of the conversation.
 Addenda are written the same way. An item with three addenda is not messy; it
 is an item that was understood in stages, and the stages are the record. An
-addendum that would change `agent`, `priority`, `verify`, or `verified` says
-so at its end and the field is updated to match. A Finding is a tree check by
-definition, so it always updates `verified` to its own date.
+addendum that would change `agent`, `priority`, `gates`, `verify`, or
+`verified` says so at its end and the field is updated to match. A Finding is
+a tree check by definition, so it always updates `verified` to its own date.
 
 ### Item template
 
 ```markdown
-### {id} — {One-line title stating the problem, not the fix}
+### {id} ({slug}) — {One-line title stating the problem, not the fix}
 
 - **area:** {area}
-- **priority:** {priority}[, {milestone-tag}]
+- **priority:** {priority}[, {milestone-tag}][ — {reason}]
+- **gates:** {optional: track}[ — {what must be true}]
 - **agent:** {yes | no | triage} — {reason, if no or triage}
 - **verify:** {what proves it done}
 - **source:** {origin}, {date}
@@ -163,8 +261,9 @@ definition, so it always updates `verified` to its own date.
 
 {Body. What is wrong or missing, where in the tree, what the consequence
 is, and anything the fixer needs to know that is not obvious from the diff —
-including things NOT to do by reflex. Cross-reference related items by id.
-Write it for a reader who has none of the conversation that produced it.}
+including things NOT to do by reflex. Cross-reference related items by id
+and slug. Write it for a reader who has none of the conversation that
+produced it.}
 
 **Diagnosis ({date})**
 
@@ -177,6 +276,11 @@ Write it for a reader who has none of the conversation that produced it.}
 **Decision ({date})**
 
 {Optional. See Dated addenda.}
+
+**Transferable mechanism**
+
+{Optional, Closed items only. The general hazard, stated so it can be
+recognized in unrelated code.}
 ```
 
 ---
@@ -255,7 +359,18 @@ Delete this section once instantiated.
 - **The milestone tag is optional.** Cuando used `launch-path` for items that
   gate a release without being code. Drop it if the project has no such
   boundary; pick a project-specific name if it does. A project already live
-  usually has none.
+  usually has none. Dropping it touches three places: the Scope paragraph,
+  the `priority` description under Field conventions, and the `priority`
+  line of the item template. An instance that keeps `gates` usually drops
+  the tag.
+- **`gates` is optional.** Drop it — and say so in the instantiation
+  comment — if the project has fewer than two release tracks, since with one
+  it duplicates `blocker`. An instance that keeps `gates` usually drops the
+  milestone tag.
+- **The Non-code id prefix is optional.** Instances that number Non-code
+  items in the main sequence keep doing so; renumbering is forbidden.
+- **Slug back-fill is incremental.** An older item is named when next
+  touched, not in a bulk pass.
 - **The decisions log is optional as a separate file.** Cuando has
   STRATEGY.md; MGP records decisions in the item's Decision block. Either is
   fine; the header should say which.
