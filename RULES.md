@@ -38,50 +38,52 @@ document improves. A rule that can't be moved is a rule to be honest about.
 
 ## Secrets and irreversibility
 
-**HR-001 (secrets-gitignored)** — Secrets, keystores, key files, and service-account credentials are
-gitignored before the first commit that could contain them.
+**HR-001 (secrets-gitignored)** — Secrets, keystores, key files, and
+service-account credentials are gitignored before the first commit that could
+contain them. `Enforced: structural`
+
+**HR-002 (scoped-api-keys)** — API keys are scoped to the tool that uses them.
+No shared global key. `Enforced: structural`
+
+**HR-003 (reserved-resources)** — Anything that consumes a permanently reserved
+resource requires a deliberate human act: published build numbers, released
+artifacts, exported files in users' hands, public API shapes. No automation
+writes to these unattended. `Enforced: human`
+
+**HR-004 (irreversible-explicit-act)** — Irreversible or public actions are
+bound to an explicit act — a dedicated branch, a tag, a manual promotion — never
+to the default path. Web deploys build from `deploy`, never `main`.
 `Enforced: structural`
-
-**HR-002 (scoped-api-keys)** — API keys are scoped to the tool that uses them. No shared global
-key. `Enforced: structural`
-
-**HR-003 (reserved-resources)** — Anything that consumes a permanently reserved resource requires a
-deliberate human act: published build numbers, released artifacts, exported files
-in users' hands, public API shapes. No automation writes to these unattended.
-`Enforced: human`
-
-**HR-004 (irreversible-explicit-act)** — Irreversible or public actions are bound to an explicit act — a
-dedicated branch, a tag, a manual promotion — never to the default path.
-Web deploys build from `deploy`, never `main`. `Enforced: structural`
 
 ---
 
 ## Agent conduct
 
-**HR-005 (recon-before-doing)** — Recon before doing. Tasks involving judgment run in two phases:
-read-only findings, then implementation after human approval.
+**HR-005 (recon-before-doing)** — Recon before doing. Tasks involving judgment
+run in two phases: read-only findings, then implementation after human approval.
 `Enforced: agent`
 
-**HR-006 (recon-may-stop)** — The recon phase must be able to stop. Stop conditions are explicit
-and are not waived in the moment. `Enforced: agent`
+**HR-006 (recon-may-stop)** — The recon phase must be able to stop. Stop
+conditions are explicit and are not waived in the moment. `Enforced: agent`
 
-**HR-007 (verify-against-tree)** — Verify against the tree, never against another document. Claims that
-code does something are evidenced by file and line, not by a plan, a backlog, or
-recollection. `Enforced: agent`
+**HR-007 (verify-against-tree)** — Verify against the tree, never against
+another document. Claims that code does something are evidenced by file and
+line, not by a plan, a backlog, or recollection. `Enforced: agent`
 
-**HR-008 (stale-state-reports)** — Don't accept an agent's report of state it isn't currently reading.
-Anything with cheap ground truth gets verified by running the command.
-`Enforced: human`
+**HR-008 (stale-state-reports)** — Don't accept an agent's report of state it
+isn't currently reading. Anything with cheap ground truth gets verified by
+running the command. `Enforced: human`
 
-**HR-009 (human-pushes)** — Agents commit. The human pushes. The push is the review gate.
+**HR-009 (human-pushes)** — Agents commit. The human pushes. The push is the
+review gate. `Enforced: agent`
+
+**HR-010 (human-clicks)** — Agents do not mutate remote or external state: no
+force-push, no history rewriting, no branch deletion, no changes to cloud
+consoles, app stores, payment dashboards, or DNS. An agent may say what to
+click; it does not click. `Enforced: agent`
+
+**HR-011 (branch-before-commit)** — Verify the current branch before committing.
 `Enforced: agent`
-
-**HR-010 (human-clicks)** — Agents do not mutate remote or external state: no force-push, no
-history rewriting, no branch deletion, no changes to cloud consoles, app stores,
-payment dashboards, or DNS. An agent may say what to click; it does not click.
-`Enforced: agent`
-
-**HR-011 (branch-before-commit)** — Verify the current branch before committing. `Enforced: agent`
 
 ---
 
@@ -90,41 +92,44 @@ payment dashboards, or DNS. An agent may say what to click; it does not click.
 **HR-012 (atomic-commits)** — Atomic commits. One logical change per commit.
 `Enforced: human`
 
-**HR-013 (conventional-commits)** — Commit subjects follow Conventional Commits, so history is scannable
-by humans and parseable by tooling. `Enforced: structural`
+**HR-013 (conventional-commits)** — Commit subjects follow Conventional Commits,
+so history is scannable by humans and parseable by tooling.
+`Enforced: structural`
 
-**HR-014 (commit-bodies-why)** — Commit bodies explain *why*, for whoever reads them next.
-`Enforced: human`
+**HR-014 (commit-bodies-why)** — Commit bodies explain *why*, for whoever reads
+them next. `Enforced: human`
 
 ---
 
 ## Documentation
 
-**HR-015 (docs-canonical-in-repo)** — Docs are canonical in the repo. Every other copy is a snapshot and
-records the date and commit it was taken from. `Enforced: human`
-
-**HR-016 (checked-fact-dated)** — A document recording a fact checked against code records *when* it
-was checked. `Enforced: human`
-
-**HR-017 (decisions-logged)** — Decisions are logged with their reasoning. Reversals supersede
-rather than overwrite; the superseded entry stays. `Enforced: human`
-
-**HR-018 (env-findings-in-repo)** — Environment-specific findings — non-obvious flags, platform quirks,
-the symptom of a corrupted build directory — live in the repo, not in memory.
+**HR-015 (docs-canonical-in-repo)** — Docs are canonical in the repo. Every
+other copy is a snapshot and records the date and commit it was taken from.
 `Enforced: human`
+
+**HR-016 (checked-fact-dated)** — A document recording a fact checked against
+code records *when* it was checked. `Enforced: human`
+
+**HR-017 (decisions-logged)** — Decisions are logged with their reasoning.
+Reversals supersede rather than overwrite; the superseded entry stays.
+`Enforced: human`
+
+**HR-018 (env-findings-in-repo)** — Environment-specific findings — non-obvious
+flags, platform quirks, the symptom of a corrupted build directory — live in the
+repo, not in memory. `Enforced: human`
 
 ---
 
 ## Quality gates
 
-**HR-019 (analyzer-clean)** — The analyzer runs clean. Zero warnings, and the build does not
-proceed otherwise. `Enforced: structural`
+**HR-019 (analyzer-clean)** — The analyzer runs clean. Zero warnings, and the
+build does not proceed otherwise. `Enforced: structural`
 
-**HR-020 (gates-fail-closed)** — Gates fail closed. When a check fires inconveniently, fix the
-condition, not the check. `Enforced: human`
+**HR-020 (gates-fail-closed)** — Gates fail closed. When a check fires
+inconveniently, fix the condition, not the check. `Enforced: human`
 
-**HR-021 (read-the-recon)** — Read the recon before approving. A gate nobody walks through is
-overhead. `Enforced: human`
+**HR-021 (read-the-recon)** — Read the recon before approving. A gate nobody
+walks through is overhead. `Enforced: human`
 
 **HR-023 (migration-verification)** — A migration or data change is verified
 against a restore of the production dump: restore the production dump at the
@@ -135,11 +140,11 @@ an empty database has no rows for a migration to get wrong. `Enforced: human`
 
 ## Source of truth
 
-**HR-022 (read-owned-values)** — Values owned by another source of truth are read at runtime, never
-written as literals: schema versions, version stamps, build numbers, paths that
-another config already declares. A constant that duplicates a value owned
-elsewhere stays correct until the source moves once, and nothing signals when it
-does. `Enforced: human`
+**HR-022 (read-owned-values)** — Values owned by another source of truth are
+read at runtime, never written as literals: schema versions, version stamps,
+build numbers, paths that another config already declares. A constant that
+duplicates a value owned elsewhere stays correct until the source moves once,
+and nothing signals when it does. `Enforced: human`
 
 ---
 

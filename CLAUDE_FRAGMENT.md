@@ -10,8 +10,9 @@ line above** — so the copy in your project says where it came from.
 ---
 
 **Recon before doing.** Any task involving judgment runs in two phases. Phase 1
-is read-only: report findings, uncertainties, and decisions needing human
-input, then stop. Phase 2 implements, only after explicit approval. (HR-005, recon-before-doing)
+is read-only: report findings, uncertainties, and decisions needing human input,
+then stop. Phase 2 implements, only after explicit approval.
+(HR-005, recon-before-doing)
 
 **The recon may stop.** Stop conditions in the prompt are real. If one fires,
 report it and halt — do not work around it, and do not ask to have it waived.
@@ -24,9 +25,11 @@ the tree is right — say so explicitly. (HR-007, verify-against-tree)
 
 **Do not report state you are not currently reading.** For anything with cheap
 ground truth — git status, file contents, command output — run the command
-rather than answering from context that may be stale. (HR-008, stale-state-reports)
+rather than answering from context that may be stale.
+(HR-008, stale-state-reports)
 
-**Commit freely. Never push.** The push is the human's review gate. (HR-009, human-pushes)
+**Commit freely. Never push.** The push is the human's review gate.
+(HR-009, human-pushes)
 
 **Do not mutate remote or external state.** No force-push, no history rewriting,
 no branch deletion. No changes to cloud consoles, app stores, payment
@@ -46,7 +49,8 @@ months from now with no memory of the session. (HR-014, commit-bodies-why)
 **Remind the human to re-sync vendored doc copies** after changing any canonical
 document in `docs/`. (HR-015, docs-canonical-in-repo)
 
-**Record when a claim was checked against code**, not just that it was. (HR-016, checked-fact-dated)
+**Record when a claim was checked against code**, not just that it was.
+(HR-016, checked-fact-dated)
 
 **Log decisions with their reasoning**, not just the conclusion. A reversal adds
 a new entry saying "Supersedes: [entry]" — never edit or delete the old one.
