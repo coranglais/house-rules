@@ -8,6 +8,8 @@ sessions. The number of projects is why the rules exist: enough of them in a
 short enough span that I needed the process to hold still even when nothing
 else did. They are what I start a project with now.
 
+This repo names no private project; instances are described, not named.
+
 They are not a theory of AI-assisted development, and they are dated: some
 exist because of a specific tool's behaviour in 2026, and will look silly
 later.
