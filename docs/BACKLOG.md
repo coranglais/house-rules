@@ -68,6 +68,13 @@ is otherwise the v1.2 copy; v1.3 is backward-compatible, so nothing in it is
 wrong, only incomplete. 001 and 002 unchanged and still bare of slugs, per
 the incremental back-fill rule.
 
+**2026-10-29 — Conventions synced to v1.3:** the Field conventions, Dated
+addenda and Item template subsections now carry the v1.3 template's text,
+with this instance's choices filled in: no `gates` (one release track), no
+milestone tag, no Non-code id prefix, the `area` list as it already stood,
+and Decision blocks as the decisions log. The entry above noted the text
+as incomplete; the declaration and the text now match. No item touched.
+
 ---
 
 ## Field conventions
@@ -75,16 +82,28 @@ the incremental back-fill rule.
 Each item carries the same fields, in the same order. Machine-parseable by
 design: this file is intended to feed an agent-driven triage or backlog
 framework later, and the `agent` field is the triage decision that framework
-will consume.
+will consume. Fields marked optional are omitted, not left blank, when they
+do not apply. Field values and tags are written unquoted on field lines; a
+consumer keys on the field line (`- **{field}:** ...`), never on a value
+appearing anywhere in the file, so a value named in prose is not a hit.
 
 - **`id`** — stable, never reused. Zero-padded numeric, assigned in order of
   entry. An item filed retroactively (fix landed before the entry existed)
   still gets the next id; say so in `entered`.
+- **`slug`** — not a field but part of the heading: `### {id} ({slug}) —
+  {title}`. Kebab-case, two to four words, naming the item's subject so it
+  stays true if the title is later corrected. Set once; never changed or
+  reused. Required on every new item; an older item without one gets one
+  the next time it is touched. Cite an item as `{id} ({slug})` — a bare id
+  is a pointer only a machine can follow.
 - **`area`** — subsystem. One of: `rules` (RULES.md content), `derived`
   (fragment, essay, vendored-copy headers), `tooling`, `docs`. Nothing else.
 - **`priority`** — `blocker` (cannot ship), `near-term` (ship-soon window),
   `deferred` (no date), `latent` (not currently reachable; guard against
-  future reachability).
+  future reachability). May carry an inline reason after an em dash
+  (`near-term — {reason}`), as `agent` does, so a move between sections is
+  explained on the line. On close the whole original value, annotation
+  included, is kept inside `was {value} — no longer applicable`.
 - **`agent`** — delegation triage. `yes` = mechanically verifiable, local
   change, small diff. `no` = requires a judgment call, a product decision, or
   touches something outside the repo. `triage` = not yet decided.
@@ -94,30 +113,43 @@ will consume.
 - **`verify`** — what proves the item done. An item with no verification story
   cannot be `agent: yes`. If an item has two halves with different verification
   stories, that is the signal to split it — or to say explicitly why it is one
-  item.
+  item. A migration or data change verifies per HR-023
+  (migration-verification): against a restore of production data, not an
+  empty database.
 - **`source`** — where the finding came from (audit, dogfooding, code review,
   a doc section, a conversation), so the reasoning is recoverable.
-- **`entered`** — when the item was added. Always present.
+- **`entered`** — when the item was added. Always present. An instance whose
+  founding batch predates the field states the id range and the batch date
+  here once, rather than on each item.
 - **`verified`** — when this item's claims were last checked **against the
   tree**, as distinct from against another document. Cite the file and line
   or the commit that confirms the claim. `n/a` for items with nothing
-  in-repo to check — and say what the item is about instead. `not checked` is
-  the honest value for an item that has never been tree-checked; it is a valid
-  state, not a placeholder to hide.
+  in-repo to check: console settings, filings, design notes — and say what
+  the item is about instead. `not checked` is the honest value for an item
+  that has never been tree-checked; it is a valid state, not a placeholder to
+  hide. `pending` is not a value; use `not checked`.
 - **`blocks`** — optional. What this item stands in front of: a feature, a
   doc section, another item. Present only when something real is waiting.
 - **`resolution`** — present only on items under Closed: `shipped` or
-  `declined`, with the date, the commits, and a one-line outcome. Live items
-  omit it. A closed item keeps its original fields as the historical record
-  of what was wanted, with `priority` rewritten as `was {value} — no longer
-  applicable` so nothing consuming this file mistakes it for live work.
+  `declined`, with the date, the commits, a one-line outcome, and where
+  each `verify` clause was seen met: in the tests, on a restore of
+  production data, or on production itself. "Shipped" alone lets a clause
+  nobody saw run pass as met. Live items omit it. A closed item keeps its
+  original fields in place, with `priority` rewritten as `was {value} — no
+  longer applicable` so nothing consuming this file mistakes it for live
+  work. Where the fix taught something that outlives the bug, a
+  **transferable mechanism** paragraph follows the addenda (see Item
+  template), stating the general hazard in a form the next reader can
+  recognize in unrelated code.
 
 `verified` is the one that earns its place. An item sourced from another doc
 and never tree-checked is how an already-fixed bug arrives as a live entry and
 how an unbuilt screen gets described as shipped. A stale item looks exactly as
 fresh as a live one without it, and an agent consuming this file takes every
 entry at face value. **Backlog items sourced from another doc are checked
-against the tree before entry, not inherited on the doc's authority.**
+against the tree before entry, not inherited on the doc's authority.** An
+instance whose initial population was assembled unchecked says so in its
+first Log entry; that is the one deliberate exception.
 
 ### Dated addenda
 
@@ -131,11 +163,14 @@ never rewritten. Three kinds, each a bold heading on its own line:
   body without deleting them; the reader should be able to see what was
   guessed and what turned out to be true.
 - **`Finding ({date})`** — what a tree check found when it disagrees with
-  the item's original claim. The claim stays; the finding corrects it.
+  the item's original claim. The claim stays; the finding corrects it. A
+  correction to the title, scope, or a number in the original body is a
+  Finding; there is no fourth kind.
 - **`Decision ({date})`** — a scope or design choice, with the alternative
   considered and why it lost. **For a project without a separate decisions
   log, this block is the decisions log**: a strategic decline lives here on
-  the closed item, and the header's decisions-log reference should say so.
+  the closed item, and the header's decisions-log reference says so.
+  Decision blocks are this project's decisions log.
 
 The original body is written once, for a reader with none of the conversation.
 Addenda are written the same way. An item with three addenda is not messy; it
@@ -147,10 +182,10 @@ definition, so it always updates `verified` to its own date.
 ### Item template
 
 ```markdown
-### {id} — {One-line title stating the problem, not the fix}
+### {id} ({slug}) — {One-line title stating the problem, not the fix}
 
 - **area:** {area}
-- **priority:** {priority}
+- **priority:** {priority}[ — {reason}]
 - **agent:** {yes | no | triage} — {reason, if no or triage}
 - **verify:** {what proves it done}
 - **source:** {origin}, {date}
@@ -160,8 +195,9 @@ definition, so it always updates `verified` to its own date.
 
 {Body. What is wrong or missing, where in the tree, what the consequence
 is, and anything the fixer needs to know that is not obvious from the diff —
-including things NOT to do by reflex. Cross-reference related items by id.
-Write it for a reader who has none of the conversation that produced it.}
+including things NOT to do by reflex. Cross-reference related items by id
+and slug. Write it for a reader who has none of the conversation that
+produced it.}
 
 **Diagnosis ({date})**
 
@@ -174,6 +210,11 @@ Write it for a reader who has none of the conversation that produced it.}
 **Decision ({date})**
 
 {Optional. See Dated addenda.}
+
+**Transferable mechanism**
+
+{Optional, Closed items only. The general hazard, stated so it can be
+recognized in unrelated code.}
 ```
 
 ---
