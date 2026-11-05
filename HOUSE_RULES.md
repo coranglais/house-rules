@@ -4,7 +4,7 @@ Working agreements for solo development with AI coding agents.
 
 > **Snapshot:** commentary on `RULES.md` @ `v2.1` — 2026-10-29 —
 > github.com/coranglais/house-rules. Rules are referenced below by their
-> permanent IDs (HR-001…HR-022); `RULES.md` is the source of truth for both
+> permanent IDs (HR-001…HR-023); `RULES.md` is the source of truth for both
 > wording and enforcement category.
 
 These are the rules I start every project with. They exist because I am one
