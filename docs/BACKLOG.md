@@ -75,6 +75,19 @@ milestone tag, no Non-code id prefix, the `area` list as it already stood,
 and Decision blocks as the decisions log. The entry above noted the text
 as incomplete; the declaration and the text now match. No item touched.
 
+**2026-11-05 — README synced; 001 slugged with a Finding; 006 filed:**
+`README.md` brought up to the tree at 2e69672 (rule range stated as of
+`v2.1`, slugs described, template and this file added to the file table,
+template tag series and annotated-tag messages named; origin paragraph
+rephrased to a fixed start). The essay's snapshot header count corrected to
+HR-023 at 3ff7dc1; no other essay change. 001 (commit-vs-tag) gets its slug
+on first touch and a dated Finding: c58ba0c rewrapped `RULES.md` after
+`v2.1` with no tag, content identical, and the README's staleness check now
+reports a non-empty diff against `v2.1`. 006 (template-names-instances)
+filed under Near-term: the template names private instances, against the
+README's own line that this repo names none. 002 and 005 unchanged; 002
+still bare of a slug, per the incremental back-fill rule.
+
 ---
 
 ## Field conventions
@@ -279,11 +292,64 @@ not delete.
 that `v2.1` carried a rule addition without the README defining `vN.x`;
 whatever tag this item's changes take shares 001's unresolved question.
 
+### 006 (template-names-instances) — The backlog template names private instances
+
+- **area:** docs
+- **priority:** near-term — the repo is public and `README.md:11` promises
+  the opposite; every copy made from the template carries the names until
+  the file is fixed
+- **agent:** no — the neutral descriptions are the maintainer's to word, and
+  the fix is a template version bump with its own tag, a versioning call
+  that is not the agent's to make.
+- **verify:** a case-insensitive grep of the tracked tree for the instance
+  names returns nothing outside git history; the template header declares
+  a new version (v1.4) with a tag on the commit; the instances are described
+  by shape where they were named.
+- **source:** recon for the README sync, 2026-11-05; found while checking the
+  README's line that this repo names no private project against the tree
+- **entered:** 2026-11-05
+- **verified:** 2026-11-05 — `templates/BACKLOG_TEMPLATE.md:4-5` (version
+  history in the instantiation comment), `:359` (milestone-tag bullet), and
+  `:374-375` (decisions-log bullet) name two instances by name; `git grep -i`
+  across the tracked tree finds no hit outside those five lines; `README.md:11`
+  reads "This repo names no private project; instances are described, not
+  named."
+
+The template's instantiation comment tells its version history by naming the
+projects each version was extracted from or adapted for, and two bullets in
+the Adapting section cite the same projects as examples of a choice (which
+milestone tag one used; where each keeps its decisions log). The names are
+of private repos. `README.md:11` says this repo names none, a line added at
+a301d16 for exactly this reason, and the backlog and this file already comply:
+the v1.3 header describes "a tracker with a non-code section" and "this
+repo's own backlog" rather than naming them. The template is the one file
+that does not.
+
+The consequence is larger than one file. The template is copied, header
+comment and all, into every instance's `docs/BACKLOG.md`; each instance
+then carries the names until someone deletes the comment, which the
+instructions say to do but which a reader may skip. The names also sit in
+the section a reader consults when adapting, so they are read, not skimmed
+past.
+
+Fix forward, no history rewrite (HR-010, human-clicks: no force-push, no
+rewriting). The names stay in git history and that is accepted. Replace
+each name with the shape of the instance — the kind of app, what it
+tracks, what made it a distinct instantiation — keeping the version story
+intact, since the story is the reason the versions exist. The change is to
+template text, so it is a template version bump, v1.4, with an entry under
+"Changes in 1.4" and tag `backlog-template-v1.4`; backward-compatible, no
+instance needs to re-declare. Nothing to fix in this file's own header.
+
+Not fixed in the session that filed it, by instruction; the wording is a
+maintainer call. Do not touch other repos' backlogs, which may carry the
+template's old header; that is theirs.
+
 ---
 
 ## Deferred
 
-### 001 — HR-015 says "commit"; every derived file and the README use a tag
+### 001 (commit-vs-tag) — HR-015 says "commit"; every derived file and the README use a tag
 
 - **area:** rules
 - **priority:** deferred
@@ -295,10 +361,13 @@ whatever tag this item's changes take shares 001's unresolved question.
 - **source:** Claude Code observation during the v2 re-sync session,
   2026-09-17
 - **entered:** 2026-09-17
-- **verified:** 2026-09-17 — `RULES.md:96-97` says "date and commit";
-  `RULES.md:7` and `RULES.md:136`, `README.md:45`, `README.md:57`,
-  `README.md:66`, `CLAUDE_FRAGMENT.md:3`, and `HOUSE_RULES.md:5` all use a
-  tag.
+- **verified:** 2026-11-05 — `RULES.md:106-108` still says "date and
+  commit"; `RULES.md:7` and `RULES.md:153`, `README.md:56-58`,
+  `README.md:68-72`, `README.md:81`, `CLAUDE_FRAGMENT.md:3`, and
+  `HOUSE_RULES.md:5` all use a tag. Line numbers as of 2e69672; the 2026-09-17
+  check cited `RULES.md:96-97`, `:136`, `README.md:45`, `:57`, `:66`, the
+  same lines before slugs and the README sync moved them. See Finding below
+  for c58ba0c.
 
 HR-015 (`RULES.md:96-97`) says every non-canonical copy of a doc "records the
 date and commit it was taken from". Everything else in the repo says tag:
@@ -329,6 +398,35 @@ what the tag is called:
 Either way the derived-file headers move to the new tag. Cross-reference 002:
 option (a) there also changes `RULES.md`, and if both land at once they share
 a tag.
+
+**Finding (2026-11-05)**
+
+The case this item's second option describes has happened, in a smaller
+form than wording: c58ba0c ("style(rules): rewrap lines after slug
+insertion") changed `RULES.md` after tag `v2.1` (a301d16) and no tag was
+cut. The change is a rewrap only. `git show v2.1:RULES.md` and
+`git show c58ba0c:RULES.md` are identical once runs of spaces and newlines
+are collapsed to one space (`tr -s ' \n' ' '` on each, then `diff`:
+no output). No rule's wording, id, slug, or `Enforced` value moved.
+
+The README's staleness check (`git diff <tag> HEAD -- RULES.md`,
+`README.md:68-72`) does not know that. Run against `v2.1` on main today it
+reports 111 changed lines, 58 insertions and 53 deletions, and the README
+says anything other than empty output "is exactly what the copy is missing".
+Both derived files name `v2.1` and are current in content; by the documented
+check they are stale. Whitespace flags do not help: `git diff -w` and
+`git diff --ignore-all-space --ignore-blank-lines` against c58ba0c each
+still report the same 111 lines, because a rewrap moves line breaks and
+git's whitespace options compare within lines, not across them.
+
+This does not change the original claim (HR-015 says "commit"; everything
+else says tag). It adds a third thing the Versions section would need to
+say once 001 is decided: what a content-neutral change to `RULES.md` does
+to the tag, since "tagged each time it changes" (`README.md:56`) was not
+followed for c58ba0c and the check documented two paragraphs later is the
+casualty. Options are the same two as above, plus a third: tag c58ba0c
+itself so the check is empty again. None chosen here. Changes `verified`
+to this date; `verify`, `agent`, and `priority` unchanged.
 
 ### 002 — CLAUDE_FRAGMENT.md is hand-maintained with no drift signal
 
