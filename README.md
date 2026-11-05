@@ -2,9 +2,10 @@
 
 Working agreements for solo development with AI coding agents.
 
-These came out of about nine months of AI-assisted development — December 2025
-onward — across a lot of projects, the biggest of my own being a Flutter app I've been building since March. Working alone, across three machines, in scattered
-sessions. The number of projects is why the rules exist: enough of them in a
+These came out of AI-assisted development since December 2025 — a lot of
+projects, most of the work on one Flutter app begun in March 2026. Working
+alone, across three machines, in scattered sessions. The number of projects is
+why the rules exist: enough of them in a
 short enough span that I needed the process to hold still even when nothing
 else did. They are what I start a project with now.
 
@@ -16,20 +17,29 @@ later.
 
 ## The files
 
-| File                 | What it is                                                                                                                                                 |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `RULES.md`           | **The source of truth.** Terse, numbered, stable IDs. Edit here.                                                                                           |
-| `CLAUDE_FRAGMENT.md` | Agent-facing subset, extracted from `RULES.md`. Never edited directly — change `RULES.md` and re-extract.                                                  |
-| `HOUSE_RULES.md`     | Annotated essay version, with the scar behind each rule. Commentary on a specific version of `RULES.md`, not a parallel source. Carries a snapshot header. |
+| File                            | What it is                                                                                                                                                 |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `RULES.md`                      | **The source of truth.** Terse, numbered, stable IDs. Edit here.                                                                                           |
+| `CLAUDE_FRAGMENT.md`            | Agent-facing subset, extracted from `RULES.md`. Never edited directly — change `RULES.md` and re-extract.                                                  |
+| `HOUSE_RULES.md`                | Annotated essay version, with the scar behind each rule. Commentary on a specific version of `RULES.md`, not a parallel source. Carries a snapshot header. |
+| `templates/BACKLOG_TEMPLATE.md` | A backlog format for projects that adopt these rules. Copy once, not synced. Versioned on its own, currently v1.3 (tag `backlog-template-v1.3`).           |
+| `docs/BACKLOG.md`               | This repo's own backlog, instantiated from the template: what is known to be wrong, missing, or deferred about the rules and their derived files.          |
 
-If the three ever disagree, `RULES.md` wins.
+If the first three ever disagree, `RULES.md` wins.
 
 ## Rule IDs
 
-Rules are `HR-001` through `HR-022`. **IDs are permanent** — never reused, never
-renumbered. A retired rule keeps its number and gets marked `Retired`, so a
-cross-reference from an old vendored copy never silently points at a different
-rule.
+Rules are `HR-001` through `HR-023` as of `v2.1`. **IDs are permanent** — never
+reused, never renumbered. A retired rule keeps its number and gets marked
+`Retired`, so a cross-reference from an old vendored copy never silently points
+at a different rule.
+
+Since `v2.1`, each rule also carries a **slug** after its ID — kebab-case, two
+to four words, naming the rule's subject rather than its current wording. Slugs
+are names: assigned once, never changed, never reused; a retired rule keeps its
+slug. Cite a rule as `id (slug)` the first time it appears in a prompt, commit,
+or doc — `HR-007 (verify-against-tree)` can be read without opening `RULES.md`;
+a bare ID can't.
 
 Each rule carries an `Enforced` field — `structural`, `agent`, or `human`:
 
@@ -46,11 +56,14 @@ point of the project. A rule that can't be moved is a rule to be honest about.
 `RULES.md` is tagged — `v1`, `v2`, and so on — each time it changes. The derived
 files name the tag they were generated from rather than a commit SHA, because a
 tag still means something to someone reading a pasted copy in an unrelated
-project six months later.
+project six months later. The backlog template is versioned on its own series
+(`backlog-template-v1.3`), since it changes on a different schedule from the
+rules.
 
-Release notes record what moved: rules added, rules retired, and rules that
-migrated to a different `Enforced` category. That last one is the interesting
-column.
+From `v2` on, the tags are annotated, and the annotation records what moved:
+rules added, rules retired, and rules that migrated to a different `Enforced`
+category. That last one is the interesting column. `v1` is a lightweight tag
+and carries no message.
 
 **Checking staleness.** In a house-rules checkout, diff `RULES.md` from the tag
 named in a derived file's header to the current commit:
