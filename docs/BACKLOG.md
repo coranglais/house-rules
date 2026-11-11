@@ -88,6 +88,14 @@ filed under Near-term: the template names private instances, against the
 README's own line that this repo names none. 002 and 005 unchanged; 002
 still bare of a slug, per the incremental back-fill rule.
 
+**2026-11-06 — First outside adoption filed:** item 007 (adoption-guidance)
+added under Near-term, from adopting the rules in a work project with a git
+repo and a Claude Project. The item was assembled outside the tree with line
+numbers read at c58ba0c, before the README sync at 2e69672 moved them; it
+was tree-checked at 800110c on 2026-11-11 before commit, every claim held,
+and `verified` carries that date and the current lines. 001, 002, 005 and
+006 unchanged; 007 cross-references 001 (commit-vs-tag).
+
 ---
 
 ## Field conventions
@@ -344,6 +352,99 @@ instance needs to re-declare. Nothing to fix in this file's own header.
 Not fixed in the session that filed it, by instruction; the wording is a
 maintainer call. Do not touch other repos' backlogs, which may carry the
 template's old header; that is theirs.
+
+### 007 (adoption-guidance) — The README's adoption steps assume one repo and inlining, and the first outside adoption departed from both
+
+- **area:** docs
+- **priority:** near-term — an adoption is live, and its lessons are
+  freshest now
+- **agent:** no — the guidance is a judgment about what to recommend, and
+  two of the findings below are rule-content questions that triage may
+  split into their own items.
+- **verify:** `README.md`'s "Using these" section covers: vendoring into a
+  repo by inlining or by `@import` of a vendored file, with the trade-off;
+  whether `RULES.md` is vendored as well as the fragment; and a project with
+  a chat-based Claude Project alongside its repo (which copy is canonical,
+  how the Project points at it, what is bumped on each tag). The new text is
+  dated and written as one adopter's experience, not as settled practice.
+  Findings 3, 4 and 5 below are each either filed as their own item or
+  resolved in a Decision here.
+- **source:** first adoption outside this repo (a work project with a git
+  repo and a Claude Project), maintainer conversation, 2026-11-06
+- **entered:** 2026-11-06
+- **verified:** 2026-11-11 — against the tree at 800110c. `README.md:78-86`
+  ("Using these": step 1 at `:80-81` vendors `RULES.md` as `docs/RULES.md`
+  with date and source tag; step 2 at `:82-84` inlines the fragment into
+  `CLAUDE.md`, "in front of them" rather than "behind a link");
+  `RULES.md:80-83` (HR-010: lead clause "remote or external state", list
+  includes "no history rewriting"); `RULES.md:106-108` (HR-015: "date and
+  commit"); `templates/BACKLOG_TEMPLATE.md:170-174` (`agent`; the push gate
+  at `:173-174`) and `:188-190` (`verified` checks "against the tree", by
+  file and line or commit). `git diff v2.1 HEAD -- RULES.md` is non-empty,
+  as part 1 says. Line numbers were first read at c58ba0c; the README's
+  moved at 2e69672, the others did not.
+
+The maintainer adopted the rules in a work project on 2026-11-06, which made
+him the first user who was not this repo. The project has a git repo with no
+remote yet, and a Claude Project (chat sessions with project docs and
+instructions) used for analysis that does not always touch the repo. The
+adoption was done by an agent following prompts, and every step that
+needed a call was stopped and asked about. Five things came out of it.
+
+**1. The adoption did not follow the README, and the README does not cover
+what it did instead.** "Using these" says to vendor `RULES.md` as
+`docs/RULES.md` and to inline the fragment into `CLAUDE.md`, because agents
+follow instructions in front of them more reliably than instructions behind
+a link. The adoption vendored only the fragment, byte-identical to tag
+`v2.1` at `docs/house-rules/CLAUDE_FRAGMENT.md`, and added a two-line
+`CLAUDE.md`: a provenance comment (source, tag, commit, date) and an
+`@import` of that file. An `@import` loads the file's text at session start,
+so it is arguably not "behind a link" in the README's sense, and it keeps
+the copy hash-checkable against the tag (`git hash-object` on the copy
+equals `git rev-parse v2.1:CLAUDE_FRAGMENT.md`). Whether the import loaded
+in that setup had not been checked by a fresh session at entry. The README
+should name both methods and the trade-off, and say whether `RULES.md` is
+worth vendoring when only agents read the project's copy. It should also
+tell an adopter what the staleness check will say: a copy vendored at `v2.1`
+already gets a non-empty diff against main because of the untagged rewrap
+recorded in 001 (commit-vs-tag), Finding of 2026-11-05.
+
+**2. A project with two homes has two copies.** A Claude Project's chats
+cannot read the repo's `CLAUDE.md`, so the fragment was also uploaded as a
+project doc. The decision on the table: keep that copy, and add a pointer
+line to the Project's instructions naming it, its tag and commit, and the
+repo copy as canonical. The cost is two copies to bump on every tag. Two
+caveats worth writing down: project docs are not guaranteed to be in
+context the way instructions are, and an agent can't edit project
+instructions, so the pointer line is pasted by hand.
+
+**3. HR-010 (human-clicks) left a local amend in question.** Its lead clause
+scopes it to "remote or external state", but "no history rewriting" in its
+list reads as standalone. The adopting agent amended a local, unpushed
+commit and then asked whether that was covered. It's a rule-content
+question, so it's likely its own item at triage. The likely answer is that
+unpushed history is the agent's to rewrite and pushed history is not, but
+the rule should say so rather than leave it to the reader.
+
+**4. HR-015 (docs-canonical-in-repo) and where a vendored copy lives.** A
+vendored copy under the adopting repo's `docs/` sits next to that repo's
+own canonical docs. The adopting agent proposed `docs/vendor/house-rules/`
+so the path itself says "copy". The adoption kept `docs/house-rules/`,
+relying on the file's own `Source:` line. Guidance or rule content; triage
+decides. Related: 001 (HR-015's commit-vs-tag wording). The adoption
+recorded both tag and commit.
+
+**5. The backlog template assumes git without saying so.** `verified` cites
+"the tree" by file:line or commit, and the `agent` gate is a push. An
+instance kept outside a repo, for example as a Claude Project doc, has
+neither, and each update would be a whole-file rewrite with no history to
+catch a violation of the append-only rules. This adoption avoided the
+problem by keeping its backlog in the repo, so nothing is broken today. If
+it becomes its own item, it is a template change and a candidate for
+Latent until someone instantiates outside a repo.
+
+None of this changes `RULES.md` by itself, so no tag follows from this item
+unless 3 or 4 is resolved as a rule change.
 
 ---
 
