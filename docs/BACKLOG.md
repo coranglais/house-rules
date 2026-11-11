@@ -96,6 +96,14 @@ was tree-checked at 800110c on 2026-11-11 before commit, every claim held,
 and `verified` carries that date and the current lines. 001, 002, 005 and
 006 unchanged; 007 cross-references 001 (commit-vs-tag).
 
+**2026-11-11 — 007 committed; second Finding on 001:** 007
+(adoption-guidance) committed at f4e9585 with `verified` set. 001
+(commit-vs-tag) gets a second Finding: c58ba0c rewrapped
+`CLAUDE_FRAGMENT.md` as well as `RULES.md`, whitespace only and identical
+after normalisation, so a fragment vendored at `v2.1` is not byte-identical
+to main. The 2026-11-05 Finding named `RULES.md` alone and was incomplete.
+Found while tree-checking 007; no other item touched.
+
 ---
 
 ## Field conventions
@@ -462,13 +470,15 @@ unless 3 or 4 is resolved as a rule change.
 - **source:** Claude Code observation during the v2 re-sync session,
   2026-09-17
 - **entered:** 2026-09-17
-- **verified:** 2026-11-05 — `RULES.md:106-108` still says "date and
+- **verified:** 2026-11-11 — `RULES.md:106-108` still says "date and
   commit"; `RULES.md:7` and `RULES.md:153`, `README.md:56-58`,
   `README.md:68-72`, `README.md:81`, `CLAUDE_FRAGMENT.md:3`, and
-  `HOUSE_RULES.md:5` all use a tag. Line numbers as of 2e69672; the 2026-09-17
-  check cited `RULES.md:96-97`, `:136`, `README.md:45`, `:57`, `:66`, the
-  same lines before slugs and the README sync moved them. See Finding below
-  for c58ba0c.
+  `HOUSE_RULES.md:5` all use a tag. Line numbers as of 2e69672, unchanged
+  since; the 2026-09-17 check cited `RULES.md:96-97`, `:136`,
+  `README.md:45`, `:57`, `:66`, the same lines before slugs and the README
+  sync moved them. See the Findings below for c58ba0c: `RULES.md` and
+  `CLAUDE_FRAGMENT.md` both rewrapped, fragment blob 3426e4f at `v2.1`,
+  f28ae1d on main.
 
 HR-015 (`RULES.md:96-97`) says every non-canonical copy of a doc "records the
 date and commit it was taken from". Everything else in the repo says tag:
@@ -528,6 +538,31 @@ followed for c58ba0c and the check documented two paragraphs later is the
 casualty. Options are the same two as above, plus a third: tag c58ba0c
 itself so the check is empty again. None chosen here. Changes `verified`
 to this date; `verify`, `agent`, and `priority` unchanged.
+
+**Finding (2026-11-11)**
+
+The Finding above is incomplete. c58ba0c rewrapped `CLAUDE_FRAGMENT.md` as
+well as `RULES.md`: 14 lines changed, 9 insertions and 5 deletions,
+whitespace only. `git show v2.1:CLAUDE_FRAGMENT.md` and
+`git show HEAD:CLAUDE_FRAGMENT.md` are identical once runs of spaces and
+newlines are collapsed to one space (`tr -s ' \n' ' '` on each, then `diff`:
+no output). The fragment's blob is 3426e4f at `v2.1` and f28ae1d on main
+from c58ba0c onward.
+
+So a fragment vendored at `v2.1`, which is what the first outside adoption
+did (007, adoption-guidance, part 1), is not byte-identical to main's
+fragment. `git hash-object` on that copy matches the tag's blob and not
+main's. The copy is current in content, and the check against the tag is
+the right one; a byte comparison against main would report a difference
+that means nothing. The fragment's provenance line (`CLAUDE_FRAGMENT.md:3`)
+still names `v2.1`, correctly: nothing in content moved, so nothing was
+regenerated. The point for this item is the same as the Finding above, now
+for both files: an untagged, content-neutral change to a tagged file makes
+every byte-level and diff-level check disagree with the content-level
+truth, and the Versions section has no sentence that resolves it.
+
+Found 2026-11-06 while tree-checking 007; recorded today. Changes
+`verified` to this date; `verify`, `agent`, and `priority` unchanged.
 
 ### 002 — CLAUDE_FRAGMENT.md is hand-maintained with no drift signal
 
